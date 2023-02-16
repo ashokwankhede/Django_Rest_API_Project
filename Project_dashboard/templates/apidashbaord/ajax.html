@@ -1,0 +1,118 @@
+
+<script>
+$('#insert_').click(function(){
+    console.log('insert button clicked')
+    output=""
+    let name=$('#name_').val()
+    let roll=$('#roll_').val()
+    let city=$('#city_').val()
+    let csrf = $('input[name=csrfmiddlewaretoken').val()
+    console.log(name,roll,city)
+    if ((id=="")||((name==""))||((roll==""))||((city==""))){
+        console.log('all field are compulsory')
+    }
+    else{
+        mydata={
+            name:name,
+            roll:roll,
+            city:city,
+            csrfmiddlewaretoken:csrf,
+        }
+    }
+    $.ajax({
+        url:"{% url 'insert' %}",
+        method:"POST",
+        data:mydata,
+        success:function(data){
+            console.log('hello')
+            $("form")[0].reset()
+            x=data
+            console.log(x)
+            for (i=0;i<x.length;i++){
+                output+= "<tr><td>"+(i+1)+"</td>"+"<td>"+ x[i].name +"</td>"+
+                        "<td>"+x[i].roll+"</td>"+"<td>"+x[i].city+"</td>"+
+                        "<td>"+"<button type=\"button\" class=\"btn btn-primary\"  data-toggle=\"modal\" data-target=\"#exampleModal\" onclick=\"update_func('"+x[i].id+","+x[i].name+","+x[i].roll+","+x[i].city+"')\">Update</button> \
+                        <button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\".bd-example-modal-sm\" onclick=\"delete_func('"+x[i].id+"')\"> Delete </button>"+"</td></tr>"
+
+            }
+            $('#tbody').html(output)
+        }
+    });
+    $('#insert_').clearForm();
+
+})
+
+$('#update').click(function(){
+    console.log('updated button clicked')
+    output=""
+    let id=$('#id').val()
+    let name=$('#name').val()
+    let roll=$('#roll').val()
+    let city=$('#city').val()
+    let csrf = $('input[name=csrfmiddlewaretoken').val()
+    if ((id=="")||((name==""))||((roll==""))||((city==""))){
+        console.log('all field are compulsory')
+    }
+    else{
+        mydata={
+            id:id,
+            name:name,
+            roll:roll,
+            city:city,
+            csrfmiddlewaretoken:csrf,
+        }
+    }
+    $.ajax({
+        url:"{% url 'update' %}",
+        method:"POST",
+        data:mydata,
+        success:function(data){
+            console.log('hello')
+            x=data
+            console.log(x)
+            for (i=0;i<x.length;i++){
+                output+= "<tr><td>"+(i+1)+"</td>"+"<td>"+ x[i].name +"</td>"+
+                        "<td>"+x[i].roll+"</td>"+"<td>"+x[i].city+"</td>"+
+                        "<td>"+"<button type=\"button\" class=\"btn btn-primary\"  data-toggle=\"modal\" data-target=\"#exampleModal\" onclick=\"update_func('"+x[i].id+","+x[i].name+","+x[i].roll+","+x[i].city+"')\">Update</button> \
+                        <button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\".bd-example-modal-sm\" onclick=\"delete_func('"+x[i].id+"')\"> Delete </button>"+"</td></tr>"
+
+            }
+            $('#tbody').html(output)
+        }
+    });
+})
+
+$('#deleteid_').click(function(){
+    console.log('delete button clicked')
+    let id=$('#delete_id').val()
+    console.log(id)
+    let csrf = $('input[name=csrfmiddlewaretoken').val()
+    output=""
+    mydata={
+        id:id,
+        csrfmiddlewaretoken:csrf,
+    }
+    $.ajax({
+        url:"{% url 'delete' %}",
+        method:"POST",
+        data:mydata,
+        success:function(data){
+            console.log('hello')
+            x=data
+            console.log(x)
+            for (i=0;i<x.length;i++){
+                output+= "<tr><td>"+(i+1)+"</td>"+"<td>"+ x[i].name +"</td>"+
+                        "<td>"+x[i].roll+"</td>"+"<td>"+x[i].city+"</td>"+
+                        "<td>"+"<button type=\"button\" class=\"btn btn-primary\"  data-toggle=\"modal\" data-target=\"#exampleModal\" onclick=\"update_func('"+x[i].id+","+x[i].name+","+x[i].roll+","+x[i].city+"')\">Update</button> \
+                        <button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\".bd-example-modal-sm\" onclick=\"delete_func('"+x[i].id+"')\"> Delete </button>"+"</td></tr>"
+
+            }
+            $('#tbody').html(output)
+        }
+
+    })
+})
+
+
+
+</script>
